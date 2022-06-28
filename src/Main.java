@@ -1,51 +1,46 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main
 {
-    public static int[] maxset(int[] A) {
-        int start_index = -1, end_index = -1, maxSubArray = -1, currSum = 0, temp_start_index=-1, temp_end_index=-1, sum=0;
-        int n = A.length;
-        for(int i=0;i<n;i++){
-            if(A[i] >= 0){
-                if(temp_end_index == (i-1)){
-                    if(temp_start_index == -1){
-                        temp_start_index = i;
-                    }
-                    temp_end_index = i;
-                    currSum += A[i];
-                }
-                else{
-                    temp_start_index = i;
-                    temp_end_index = i;
-                    currSum = A[i];
-                }
-                if(currSum > sum){
-                    start_index = temp_start_index;
-                    end_index = temp_end_index;
-                }
+    public static ArrayList<Integer> maxset(String A) {
+        int cur = 0;
+        int maxx = 0, l = 0, r = 0;
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(-1);
+        ans.add(-1);
+        for(int i = 0 ; i < A.length() ; i++){
+            if(A.charAt(i)=='1')
+                cur--;
+            else cur++;
+            if(cur > maxx){
+                ans.set(0, l+1);
+                ans.set(1, r+1);
+                maxx = cur;
             }
+            if(cur < 0) {
+                cur = 0;
+                l = i+1;
+                r = i+1;
+            }
+            else r++;
+        }
+        if(maxx == 0){
+            return new ArrayList<>();
+        }
+        else return ans;
 
-        }
-        int[] result = new int[end_index-start_index+1];
-        if(start_index == -1){
-            return new int[]{};
-        }
-        else{
-            for(int i=start_index;i<(end_index+1);i++){
-                result[i-start_index] = A[i];
-            }
-            return result;
-        }
 
     }
 
     public static void main(String[] args) {
         int[] arr = {1, 2, 5, -7, 2, 5};
-        int[] result = maxset(arr);
-        for(int i=0;i<result.length;i++){
-            System.out.print(result[i] + ", ");
-
+        String A = "010";
+        ArrayList<Integer> result = maxset(A);
+        for (Integer integer : result) {
+            System.out.print(integer + " ");
         }
+
     }
 }
 
